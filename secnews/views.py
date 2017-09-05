@@ -9,13 +9,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import SecnewsItem
 
 # Create your views here.
-class IndexView(generic.ListView):
-    template_name = 'secnews/index.html'
-    context_object_name = 'secnews_list'
-
-    def get_queryset(self):
-        """Return all news."""
-        return SecnewsItem.objects.order_by('-pub_date','id')
 
 def index(request):
     secnews_list = SecnewsItem.objects.order_by('-pub_date','id')
