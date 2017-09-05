@@ -22,17 +22,6 @@ def index(request):
     context = {'title': '搜索安全动态', 'secnews_list': secnews_list}
     return render(request, 'secnews/index.html', context)
 
-# def year(request, y):
-#     secnews_list = SecnewsItem.objects.filter(pub_date__year=y).order_by('-pub_date','id')
-#     context = {'secnews_list': secnews_list}
-#     return render(request, 'secnews/result.html', context)
-
-# def month(request, y, m):
-#     secnews_list = SecnewsItem.objects.filter(pub_date__year=y,
-#                                               pub_date__month=m).order_by('-pub_date','id')
-#     context = {'secnews_list': secnews_list}
-#     return render(request, 'secnews/result.html', context)
-
 def date_view(request, y, m, d):
     secnews_list = SecnewsItem.objects.filter(pub_date__year=y,
                                               pub_date__month=m,
@@ -71,15 +60,8 @@ def search(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         secnews_list = paginator.page(paginator.num_pages)
 
-    context = { 'type': search_type,
+    context = { 'title': '搜索结果',
+                'type': search_type,
                 'secnews_list': secnews_list, 
                 'keyword': keyword}
     return render(request, 'secnews/result.html', context)
-
-class SearchResultView(generic.ListView):
-    template_name = 'secnews/result.html'
-    context_object_name = 'secnews_list'
-
-    def get_queryset(self):
-        """Return result"""
-        return SecnewsItem.objects.order_by('-pub_date','id')
