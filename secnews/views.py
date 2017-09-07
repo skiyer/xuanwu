@@ -11,7 +11,7 @@ from .models import SecnewsItem
 # Create your views here.
 
 def index(request):
-    secnews_list = SecnewsItem.objects.order_by('-pub_date','id')
+    secnews_list = SecnewsItem.objects.values('pub_date').order_by('-pub_date').distinct()[:5]
     context = {'title': '搜索安全动态', 'secnews_list': secnews_list}
     return render(request, 'secnews/index.html', context)
 
@@ -23,7 +23,7 @@ def date_view(request, y, m, d):
     one_day = timedelta(days=1)
     url_format = '/secnews/%Y/%m/%d/'
     context = { 'title': '搜索结果',
-                'secnews_list': secnews_list, 
+                'secnews_list': secnews_list,
                 'previous_day': datetime.strftime(current_date - one_day, url_format),
                 'next_day': datetime.strftime(current_date + one_day, url_format)}
     return render(request, 'secnews/result.html', context)
@@ -55,6 +55,6 @@ def search(request):
 
     context = { 'title': '搜索结果',
                 'type': search_type,
-                'secnews_list': secnews_list, 
+                'secnews_list': secnews_list,
                 'keyword': keyword}
     return render(request, 'secnews/result.html', context)
