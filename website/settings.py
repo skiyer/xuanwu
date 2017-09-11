@@ -25,7 +25,11 @@ SECRET_KEY = 'yfwj=wsf!#dlvj&=f+8#u=72n@jje*g3c(t-^97-$#pz@=&@x@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'vivid.ddns.net']
+ALLOWED_HOSTS = ['127.0.0.1',
+                 'localhost',
+                 '192.168.181.129',
+                 'testserver',
+                 'vivid.ddns.net']
 
 
 # Application definition

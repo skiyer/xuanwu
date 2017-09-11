@@ -37,44 +37,24 @@ class SecnewsItemTests(TestCase):
         response = self.client.get(reverse('secnews:index'))
         self.assertEqual(response.status_code, 200)
         # self.assertContains(response, "No polls are available.")
-        self.assertQuerysetEqual(response.context['secnews_list'], 
-            ['<SecnewsItem: #3, 2017-07-27>', '<SecnewsItem: #4, 2017-07-27>', '<SecnewsItem: #2, 2016-04-22>', '<SecnewsItem: #1, 2016-04-12>'])
+        self.assertQuerysetEqual(response.context['secnews_list'],
+                ["{'pub_date': datetime.date(2017, 7, 27)}", "{'pub_date': datetime.date(2016, 4, 22)}",  "{'pub_date': datetime.date(2016, 4, 12)}"])
 
-    def test_get_year(self):
-        # test 2016
-        response = self.client.get(reverse('secnews:year', kwargs={'y': 2016}))
-        self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context['secnews_list'], 
-            ['<SecnewsItem: #2, 2016-04-22>', '<SecnewsItem: #1, 2016-04-12>'])
-        # test 2017
-        response = self.client.get(reverse('secnews:year', kwargs={'y': 2017}))
-        self.assertEqual(response.status_code, 200)
-        # self.assertContains(response, "No polls are available.")
-        self.assertQuerysetEqual(response.context['secnews_list'], 
-            ['<SecnewsItem: #3, 2017-07-27>', '<SecnewsItem: #4, 2017-07-27>'])
-
-    def test_get_month(self):
-        # test 2016.4
-        response = self.client.get(reverse('secnews:month', kwargs={'y': 2016, 'm': 4}))
-        self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context['secnews_list'], 
-            ['<SecnewsItem: #2, 2016-04-22>', '<SecnewsItem: #1, 2016-04-12>'])
-
-    def test_get_day(self):
+    def test_date_view(self):
         # test 2017.7.27
-        response = self.client.get(reverse('secnews:day', kwargs={'y': 2017, 'm': 7, 'd': 27}))
+        response = self.client.get(reverse('secnews:date_view', kwargs={'y': 2017, 'm': 7, 'd': 27}))
         self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context['secnews_list'], 
+        self.assertQuerysetEqual(response.context['secnews_list'],
             ['<SecnewsItem: #3, 2017-07-27>', '<SecnewsItem: #4, 2017-07-27>'])
 
     def test_search_keyword_in_cn_text(self):
-        response = self.client.get(reverse('secnews:search'), {'keyword':'无线', 'content_type':'cn_text'})
+        response = self.client.get(reverse('secnews:search'), {'q':'无线', 'type':'content'})
         self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context['secnews_list'], 
+        self.assertQuerysetEqual(response.context['secnews_list'],
             ['<SecnewsItem: #3, 2017-07-27>'])
-    
+
     def test_search_keyword_in_tag(self):
-        response = self.client.get(reverse('secnews:search'), {'keyword':'android', 'content_type':'tag'})
+        response = self.client.get(reverse('secnews:search'), {'q':'android', 'type':'tag'})
         self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context['secnews_list'], 
+        self.assertQuerysetEqual(response.context['secnews_list'],
             ['<SecnewsItem: #1, 2016-04-12>'])
