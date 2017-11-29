@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['127.0.0.1',
                  'localhost',
                  '192.168.181.129',
                  'testserver',
-                 'vivid.ddns.net']
+                 'devi.dnsup.net']
 
 
 # Application definition
